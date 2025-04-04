@@ -6,9 +6,9 @@ html, body {
 /* CHATBOX*/
 .chatbox {
   position: fixed;
-  bottom: 200px;
-  right: 900px; 
-  width: 600px;
+  bottom: 30%;
+  right: 40%; 
+  width: 45%;
  
 }
 
@@ -44,7 +44,7 @@ html, body {
 
 /* Messages */
 .chatbox__messages__cotainer {      
-  height: 350px;    
+  height: 50%;    
   background: #0ca6e3; 
   opacity: 0.9;
   font-family: cursive;
