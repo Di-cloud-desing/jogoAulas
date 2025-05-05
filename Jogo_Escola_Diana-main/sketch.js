@@ -15,7 +15,7 @@ var cena = 1;
 //estrelas
 var star, star_display;
 var star_img, empty_star, one_star, two_star
-
+var venceu=false
 //jogo da soma
 var number1, number5,number9,number0, number1Img, number5Img, number9Img,number0Img;
 var number1Group, number5Group, number9Group, number0Group;
@@ -25,7 +25,12 @@ var girl, girlImg;
 var PLAY=1;
 var END=0;
 var gameState=1;
-
+//jogo biblioteca
+var score=0
+var access1, access2, access3, button1,button2,button3
+var accesscode1="CODE"
+var accesscode2="CODE"
+var accesscode3="CODE"
 function preload() {
   //imagens do Jogo
   backgroundImage1 = loadImage("./cenas/cena1.jpg");
@@ -126,13 +131,36 @@ number1Group=new Group()
 number9Group=new Group()
 number5Group=new Group()
 number0Group=new Group()
+access1=createInput("")
+access1.position(100,110)
+access1.style("background","white")
+
+access2=createInput("")
+access2.position(400,295)
+access2.style("background","white")
+
+access3=createInput("")
+access3.position(100,290)
+access3.style("background","white")
+
+button1=createImg("sinalizadores/botaoplay.png")
+button1.position(100,140)
+button1.size(50,50)
+
+button2=createImg("sinalizadores/botaoplay.png")
+button2.position(400,325)
+button2.size(50,50)
+
+button3=createImg("sinalizadores/botaoplay.png")
+button3.position(100,330)
+button3.size(50,50)
 }
 
 function draw() 
 {  
   if(cena === 1){
     background(backgroundImage1);
-
+    esconderelementos()
    //colisão com o nerd
    if(pc.collide(nerd)){
     moved=false //desabilitar controles do jogador
@@ -154,29 +182,30 @@ function draw()
     pc.x = 420
     pc.y = 420
     console.log(cena)
-  }
-  if(pc.x===420&&pc.y===420){
     cena=2
-    console.log(cena)
   }
+ 
   }
   //cena 2
   if(cena === 2){ 
 
     background(backgroundImage2)
+    esconderelementos()
     nerd.visible=false //esconder nerd
     moved=false //desabailitar controles do jogador
     botaosaladeaula.visible=true //mostrar botao
     
 
      //se pressionar o botao da sala de aula
-    if(mousePressedOver(botaosaladeaula)){
+    if(mousePressedOver(botaosaladeaula)&&!venceu){
         cena=3 //sala de aula
-        console.log(cena)   
+        console.log(cena)
+         
     }
     //se pressionar o botao da biblioteca
-    if(mousePressedOver(botaoBiblioteca)){
+    if(mousePressedOver(botaoBiblioteca)&&venceu){
         cena=4 //biblioteca
+        mostrarelementos()
         console.log(cena)
      }
 
@@ -186,6 +215,7 @@ function draw()
   if(cena === 3){
     //backgroundImage3
     background(backgroundImage3);
+    esconderelementos()
     nerd.visible=false
     pc.visible=false
     girl.visible=true
@@ -216,7 +246,7 @@ function draw()
       pontos+=9
     }
     
-    if(pontos>=30
+    if(pontos>=1
 
     ){
       gameState=END
@@ -224,7 +254,7 @@ function draw()
     
   }
   if(gameState===END){
-  if(pontos===30){
+  if(pontos===1){
     number0Group.destroyEach()
     number1Group.destroyEach()
     number5Group.destroyEach()
@@ -242,7 +272,8 @@ function draw()
       star.visible=false
       botaoBiblioteca.visible=true
       cena=2
-    },3000)
+      venceu=true
+    },1000)
   }
   if(pontos>30){
     textSize(20);
@@ -261,6 +292,7 @@ function draw()
     number1Group.setVelocityYEach(0)
     number5Group.setVelocityYEach(0)
     number9Group.setVelocityYEach(0)
+
     
    }
   
@@ -277,17 +309,38 @@ function draw()
   // cena 4
   if(cena === 4){
     background(backgroundImage4);
+    perguntas()
     nerd.visible=false
     pc.visible=false
     botaosaladeaula.visible=false
     botaoBiblioteca.visible=false
     
-
-    
-    
+    button1.mouseClicked(acaobutton1)
+    button2.mouseClicked(acaobutton2)
+    button3.mouseClicked(acaobutton3)
+    if(score===3){
+      clear()
+      star.visible=true
+      setTimeout(()=>{
+      star_display.changeAnimation("twostar")
+      star.visble=false
+      cena=5
+      },1000)
+    }
+    textSize(20)
+    fill ("white")
+    text("Mål:"+score,450,50)
   }
   //cena 5
   if(cena === 5){
+    background(backgroundImage5);
+    nerd.visible=true
+    pc.visible=true
+    nerd.scale=0.8
+    pc.scale=0.5
+    moved=true
+
+
     
     
   }
@@ -382,5 +435,69 @@ function createnove(){
     nove.velocityY = -5;
     nove.lifetime = 130;
     number9Group.add(nove);
+
     }
+}
+function perguntas(){
+  textSize(15)
+    fill ("orange")
+    text("doce1",100,70)
+
+    fill ("orange")
+    text("qual palavra usamos para codigo",100,90)
+
+    fill ("orange")
+    text("doce1",400,255)
+
+    fill ("orange")
+    text("qual palavra usamos para codigo",400,275)
+
+    fill ("orange")
+    text("doce1",100,250)
+
+    fill ("orange")
+    text("qual palavra usamos para codigo",100,270)
+}
+function autenticar(atualcode,code){
+  if(atualcode===code.toUpperCase())
+    return true
+  else
+   return false 
+}
+function acaobutton1(){
+if(autenticar(accesscode1,access1.value())){
+  access1.hide()
+  button1.hide()
+  score++
+}
+}
+function acaobutton2(){
+  if(autenticar(accesscode2,access2.value())){
+    access2.hide()
+    button2.hide()
+    score++
+  }
+  }
+  function acaobutton3(){
+    if(autenticar(accesscode3,access3.value())){
+      access3.hide()
+      button3.hide()
+      score++
+    }
+    }
+function esconderelementos(){
+  access1.hide()
+  access2.hide()
+  access3.hide()
+  button1.hide()
+  button2.hide()
+  button3.hide()
+}
+function mostrarelementos(){
+  access1.show()
+  access2.show()
+  access3.show()
+  button1.show()
+  button2.show()
+  button3.show()
 }
