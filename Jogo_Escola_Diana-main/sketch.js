@@ -28,7 +28,7 @@ var gameState=1;
 //jogo biblioteca
 var score=0
 var access1, access2, access3, button1,button2,button3
-var accesscode1="CODE"
+var accesscode1="JOSEFINE"
 var accesscode2="CODE"
 var accesscode3="CODE"
 function preload() {
@@ -40,16 +40,16 @@ function preload() {
   backgroundImage5 = loadImage("./cenas/cena5.jpg");
 
   //jogador principal
-  pc_CostaM=loadAnimation("./menina/costa_1.png","./menina/costa_2.png", "./menina/costa_3.png")
+  pc_CostaM=loadAnimation("./menina/menina1.png","./menina/menina2.png", "./menina/menina3.png","/menina/menina4.png")
   pc_DireitaM=loadAnimation("./menina/direita_m_1.png","./menina/direita_m_2.png","./menina/direita_m_3.png")
   pc_EsquerdaM=loadAnimation("./menina/esquerda_m_1.png","./menina/esquerda_m_2.png","./menina/esquerda_m_3.png")
-  pc_FrenteM=loadAnimation("./menina/frente_m_1.png","./menina/frente_m_2.png","./menina/frente_m_3.png","./menina/frente_m_4.png","./menina/frente_m_5.png","./menina/frente_m_6.png","./menina/frente_m_7.png")
-
-  pc_FrenteP=loadAnimation("./menina/frente_m_5.png")
-  pc_CostaP = loadAnimation ("./menina/costa_1.png")
+  pc_FrenteM=loadAnimation("./menina/menina_frente2.png","./menina/menina_frente3.png","./menina/menina_frente4.png")
+  
+  pc_FrenteP=loadAnimation("./menina/menina_frente2.png")
+  pc_CostaP = loadAnimation ("./menina/menina3.png")
   pc_EsquerdaP = loadAnimation ("./menina/esquerda_m_1.png")
   pc_DireitaP = loadAnimation ("./menina/direita_m_1.png")
-  girlImage=loadAnimation("./menina/frente_m_1.png","./menina/frente_m_2.png","./menina/frente_m_3.png","./menina/frente_m_4.png","./menina/frente_m_5.png","./menina/frente_m_6.png","./menina/frente_m_7.png")
+  girlImage=loadAnimation("./menina/menina_frente2.png","./menina/menina_frente3.png","./menina/menina_frente4.png")
   //npc nao jogador
   nerdImage = loadImage("./nerd/nerd.png")
 
@@ -74,8 +74,10 @@ function preload() {
 }
 
 function setup() {
- createCanvas(700,600);
+ canvas=createCanvas(1000,600);
  //moviemnto
+ canvas.position((windowWidth-width)/2,(windowHeight-height)/2)
+ canvas.style("z-index","-1")
  pc = createSprite(420,500,20,30);
  pc.addAnimation("costa",pc_CostaM)
  pc.addAnimation("direita",pc_DireitaM)
@@ -86,7 +88,7 @@ function setup() {
  pc.addAnimation("pc_DireitaP",pc_DireitaP)
  pc.addAnimation("pc_FrenteP",pc_FrenteP)
  pc.changeAnimation("pc_FrenteP")
- pc.scale=0.4
+ pc.scale=0.15
 
  nerd = createSprite(490,500,20,30);
  nerd.addImage("nerd", nerdImage)
@@ -119,9 +121,9 @@ function setup() {
  girl.addAnimation("menina",girlImage)
  girl.velocityY=0
  girl.visible=false
- girl.scale = 0.9
+ girl.scale = 0.3
  
- star=createSprite(350,300)
+ star=createSprite(500,300)
  star.addImage(star_img)
  star.scale=0.1
  star.visible=false
@@ -132,27 +134,28 @@ number9Group=new Group()
 number5Group=new Group()
 number0Group=new Group()
 access1=createInput("")
-access1.position(100,110)
+//300,110 10000,600
+access1.position(canvas.x+width/2-200,canvas.y+height/2-190)
 access1.style("background","white")
 
 access2=createInput("")
-access2.position(400,295)
+access2.position(canvas.x+width/2-200,canvas.y+height/2-39)
 access2.style("background","white")
 
 access3=createInput("")
-access3.position(100,290)
+access3.position(canvas.x+width/2-200,canvas.y+height/2+100)
 access3.style("background","white")
 
 button1=createImg("sinalizadores/botaoplay.png")
-button1.position(100,140)
+button1.position(canvas.x+width/2-200,canvas.y+height/2-160)
 button1.size(50,50)
 
 button2=createImg("sinalizadores/botaoplay.png")
-button2.position(400,325)
+button2.position(canvas.x+width/2-200,canvas.y+height/2-9)
 button2.size(50,50)
 
 button3=createImg("sinalizadores/botaoplay.png")
-button3.position(100,330)
+button3.position(canvas.x+width/2-200,canvas.y+height/2+130)
 button3.size(50,50)
 }
 
@@ -167,7 +170,7 @@ function draw()
     buttonMissao1.visible=true //mostrar botão
     pc.x=pc.x-50 //colocar jogador ao lado do nerd
     pc.changeAnimation("pc_FrenteP") //mudar animação
-    pc.scale = 0.4
+    pc.scale = 0.15
     //abrir janela de chat
     $(document).ready(function () {
       displayBot()
@@ -178,7 +181,7 @@ function draw()
     buttonMissao1.visible = false //esconder botão
     displayBot() //fechar chat
     pc.changeAnimation("pc_FrenteP") //mudar animação
-    pc.scale = 0.4
+    pc.scale = 0.15
     pc.x = 420
     pc.y = 420
     console.log(cena)
@@ -275,7 +278,7 @@ function draw()
       venceu=true
     },1000)
   }
-  if(pontos>30){
+  if(pontos>1){
     textSize(20);
     fill("white")
     text("voce ultrapasou a meta tente novamente",120,339)
@@ -302,8 +305,8 @@ function draw()
     //pontuação
     textSize(20);
     fill(0);
-    text("Mål: "+ meta,550,30);
-    text("Points: "+ pontos,550,50);
+    text("Mål: "+ meta,850,30);
+    text("Points: "+ pontos,850,50);
     //text pontos
   }
   // cena 4
@@ -323,12 +326,12 @@ function draw()
       star.visible=true
       setTimeout(()=>{
       star_display.changeAnimation("twostar")
-      star.visble=false
+      
       cena=5
       },1000)
     }
     textSize(20)
-    fill ("white")
+    fill ("black")
     text("Mål:"+score,450,50)
   }
   //cena 5
@@ -337,9 +340,19 @@ function draw()
     nerd.visible=true
     pc.visible=true
     nerd.scale=0.8
-    pc.scale=0.5
+    pc.scale=0.20
     moved=true
-
+    star.visible=false
+    if(pc.collide(nerd)){
+      moved=false //desabilitar controles do jogador
+      pc.x=pc.x-50 //colocar jogador ao lado do nerd
+      pc.changeAnimation("pc_FrenteP") //mudar animação
+      pc.scale = 0.4
+      //abrir janela de chat
+      $(document).ready(function () {
+        displayBot2()
+      })
+     }
 
     
     
@@ -350,7 +363,7 @@ function draw()
    if(keyWentDown(UP_ARROW)){
     pc.velocityY=-2
     pc.changeAnimation("costa")
-    pc.scale=0.222
+    pc.scale=0.15
    }
    else if (keyWentUp(UP_ARROW)){
     pc.velocityY=0
@@ -358,7 +371,7 @@ function draw()
    }
    if(keyWentDown(DOWN_ARROW)){
     pc.velocityY=2
-    pc.scale=0.4
+    pc.scale=0.15
     pc.changeAnimation("frente")
    }
    else if (keyWentUp(DOWN_ARROW)){
@@ -385,6 +398,46 @@ function draw()
     pc.changeAnimation("pc_DireitaP")
    }
   }
+
+  if(moved===true&&cena===5){
+   if(keyWentDown(UP_ARROW)){
+    pc.velocityY=-2
+    pc.changeAnimation("costa")
+    pc.scale=0.15
+   }
+   else if (keyWentUp(UP_ARROW)){
+    pc.velocityY=0
+    pc.changeAnimation("pc_CostaP")
+   }
+   if(keyWentDown(DOWN_ARROW)){
+    pc.velocityY=2
+    pc.scale=0.15
+    pc.changeAnimation("frente")
+   }
+   else if (keyWentUp(DOWN_ARROW)){
+    pc.velocityY=0
+    pc.changeAnimation("pc_FrenteP")
+   }
+   if(keyWentDown(LEFT_ARROW)){
+    pc.velocityX=-2
+    pc.scale=0.9
+    pc.changeAnimation("esquerda")
+   }
+   else if (keyWentUp(LEFT_ARROW)){
+    pc.velocityX=0
+    pc.changeAnimation("pc_EsquerdaP")
+   }
+   
+   if(keyWentDown(RIGHT_ARROW)){
+    pc.velocityX=2
+    pc.scale=0.20
+    pc.changeAnimation("direita")
+   }
+   else if (keyWentUp(RIGHT_ARROW)){
+    pc.velocityX=0
+    pc.changeAnimation("pc_DireitaP")
+   }
+  }
   edges= createEdgeSprites();
   pc.collide(edges);
   
@@ -396,6 +449,9 @@ function draw()
 //abrir janela de chat
 function displayBot() {
   $('.chatbox__chat').toggle()
+}
+function displayBot2() {
+  $('.chatbox__chat2').toggle()
 }
 function createZero(){
   if (World.frameCount % 200 == 0) {
@@ -440,23 +496,23 @@ function createnove(){
 }
 function perguntas(){
   textSize(15)
-    fill ("orange")
-    text("doce1",100,70)
+    fill ("black")
+    text("nefjosie",300,70)
 
-    fill ("orange")
-    text("qual palavra usamos para codigo",100,90)
+    fill ("black")
+    text("Hvem er 6.b dansk lære",300,90)
 
-    fill ("orange")
-    text("doce1",400,255)
+    fill ("black")
+    text("doce1",300,220)
 
-    fill ("orange")
-    text("qual palavra usamos para codigo",400,275)
+    fill ("black")
+    text("qual palavra usamos para codigo",300,240)
 
-    fill ("orange")
-    text("doce1",100,250)
+    fill ("black")
+    text("doce1",300,370)
 
-    fill ("orange")
-    text("qual palavra usamos para codigo",100,270)
+    fill ("black")
+    text("qual palavra usamos para codigo",300,390)
 }
 function autenticar(atualcode,code){
   if(atualcode===code.toUpperCase())
@@ -501,3 +557,25 @@ function mostrarelementos(){
   button2.show()
   button3.show()
 }
+function windowResized(){
+  canvas.position((windowWidth-width)/2,(windowHeight-height)/2)
+
+  access1.position(canvas.x+width/2-200,canvas.y+height/2-190)
+
+  access2.position(canvas.x+width/2-200,canvas.y+height/2-39)
+
+  access3.position(canvas.x+width/2-200,canvas.y+height/2+100)
+
+  button1.position(canvas.x+width/2-200,canvas.y+height/2-160)
+
+  button2.position(canvas.x+width/2-200,canvas.y+height/2-9)
+
+  button3.position(canvas.x+width/2-200,canvas.y+height/2+130)
+posisonarcaixa()
+}
+function posisonarcaixa(){
+  var caixa=document.getElementById("dialogo")
+  caixa.style.left=(windowWidth/2-caixa.offsetWidth/2)+"px"
+  caixa.style.top=(windowHeight*0.1)+"px"
+}
+
